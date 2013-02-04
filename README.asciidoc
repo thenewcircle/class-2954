@@ -9,6 +9,8 @@ Day 1
 LECTURE: Android Overview::
 Overview of Android, it's history, big picture of its stack, development tools, and security model: Android Overview.
 
+////
+
 LECTURE: Android UI::
 Explain how the UI is organized.
 
@@ -209,6 +211,7 @@ A receiver that turns on or off the refresh service alarm as network becomes ava
 HOMEWORK: Use Shared Prefs for Refresh Interval::
 We currently have the interval hard coded. We should be using values from the shared preferences instead.
 
+////
 
 == Links ==
 
