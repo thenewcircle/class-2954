@@ -2,3 +2,7 @@ class-2954
 ==========
 
 Android Bootcamp in Building M
+
+== Links ==
+
+* http://software.intel.com/en-us/articles/intel-hardware-accelerated-execution-manager[Intel HAXM]
