@@ -3,6 +3,213 @@ class-2954
 
 Android Bootcamp in Building M
 
+Day 1
+----
+
+LECTURE: Android Overview::
+Overview of Android, it's history, big picture of its stack, development tools, and security model: Android Overview.
+
+LECTURE: Android UI::
+Explain how the UI is organized.
+
+DEMO: Status Activity Layout::
+Create StatusActivity layout file, using Relative Layout. Add a button and an edit text.
+
+LAB: Status Activity Layout::
+Add EditText to Status Activity layout, setup its height, width, id, and hint.
+Position it below the button, and have it take entire remaining screen space.
+
+LAB: Status Activity Landscape Layout::
+Create a landscape version of status layout.
+Hint: 
+. Use File->New->Android XML File tool.
+. Create new layout in /res/layout-land/activity_status.xml.
+. Qualify it for _Orientation_ qualifier
+. Start by copying the content of default status layout.
+
+HOMEWORK::
+* Review _FastTrack to Java_ chapters on OOP and Packaging
+* Watch http://mrkn.co/f/595[Eclipse Video]
+
+
+Day 2
+----
+
+LECTURE: Android UI::
+User Interface Events module UI_Events
+
+DEMO: Implement onClickListener for the update button::
+Add the Java binding to handle the update button. Use LogCat to print out the output to the log and verify the button works.
+
+
+LAB: Handling UI Events::
+. Add a `TextView` with id `text_count` to status activity. (hint: don't forget to update landscape layout as well!).
+. Add a `TextWatcher` listener to `editStatus` and update `textCount` as user types.
+. Tell user how many characters are left, assuming we have 140 total.
+
+REVIEW: Android UI::
+Review questions for the User Interface module
+
+DEMO: Adding the YambaClient jar to the project::
+Demonstrate how to download and use a third party JAR file into the app project.
+
+DEMO: Async Task::
+Use `YambaClient` to post status update to the cloud. Show how it won't work on UI thread, creating the motivation for `AsyncTask`.
+
+DEMO: Adding Internet permissions::
+Explain the security model, and need for app to declare what permissions it wants to use.
+
+LAB: Add a Dialog while posting::
+Hint: Use http://developer.android.com/reference/android/app/ProgressDialog.html[ProgressDialog]
+Use AsyncTask's callbacks to start/stop the progress dialog.
+
+HOMEWORK::
+Read ahead on Fragments module Fragments.
+
+
+Day 3
+----
+
+LECTURE: Fragments Overview::
+What fragments are, why you'd care, and how to use them statically: Fragments.
+
+
+DEMO: Using fragments statically::
+Convert the status activity to status activity + status fragment.
+
+LECTURE: Preferences::
+Overview of preferences in Android: Preferences
+
+DEMO: How to create a simple preference::
+Create preference screen for username and password.
+
+DEMO: Use Preference Fragment::
+Switch from using `PreferenceActivity` to `PreferenceFragment`. Use dynamic loading.
+
+LAB: Add server and refresh interval to preferences::
+Server is another text input (i.e. `EditTextPreference`), but refresh interval could be a `ListPreference` with human-readable values such as: Five minutes, Every hour, Once a day. The values would be in seconds. Hint: specify entities and entity values as string arrays values (new type of values resource).
+
+DEMO: Using Preference Manager::
+Use Preference Manager to read the data in status fragment to get username and password data.
+
+LECTURE: File System Overview::
+Overview of main partitions of the file system on the device. Discuss `/system`, `/sdcard`, and `/data`. Explain of `/data/data/com.example` app filesystem sandbox.
+
+LAB: Create Main activity::
+Create activity that will be the main entry point into the app.
+
+LECTURE: ActionBar::
+How Action Bar providers for app navigation: Action_Bar
+
+DEMO: Adding menu for Prefs and Status Update::
+Add menu to jump to prefs activity and status activity.
+
+LAB: Add Action Bar Item::
+Add a menu item for preferences. Hint: use icon `ic_menu_preferences`.
+
+LECTURE: Intents::
+How intents work: Intents
+
+DEMO: Adding action bar actions::
+Use intents to launch activities. Then, switch to using fragments dynamically instead.
+
+LAB: Use static fragments::
+Create a main activity that would host both preference fragment as well as status fragment.
+
+HOMEWORK: Read ahead on advanced fragments::
+Topics on how to communicate from fragment to activity, how to use back stack, and similar.
+
+
+Day 4
+----
+
+LECTURE: Services::
+Service overview, lifecycle: Services.
+
+DEMO: Implement `RefreshService`::
+Add basic callbacks.
+
+LAB: Add _Refresh_ button to Acton Bar::
+Have this button start the Refresh service. Hint: use `startService()`.
+
+LAB: Read Shared Prefs::
+Use the default shared preferences to get username and password.
+
+DEMO: Add YambaClient::
+Use shared prefs.
+
+LECTURE: Intent Service::
+Overview of what it is. Change Refresh service to become an intent service: IntentService.
+
+
+// lunch
+
+LECTURE: Content Providers::
+Using content providers and creating content providers: Content_Providers.
+
+DEMO: Create StatusContract::
+Create status contract file with a bunch of constants we'll need later.
+
+DEMO: Create ContentProvider::
+Setup the shell for the status provider. Register it with the manifest.
+
+DEMO: SQL Databases::
+Implement DbHelper class
+
+DEMO: Implementing Status Provider's insert()::
+Implement the insert() method so it properly inserts the data into the timeline databases. 
+
+HOMEWORK: Add Purge Data button::
+Add a button to the action bar that will call status provider's delete() method, and will remove all the records in the database (won't drop the table).
+
+
+Day 5
+----
+
+DEMO: Implement query() in status provider::
+Add support for querying the data.
+
+LAB: Implement update()::
+Provide the implementation for update() in status provider, similar to insert() and delete().
+
+LAB: Create a Timeline Fragment::
+Add a shell for a new timeline fragment. It's be the main content of the main activity.
+
+LECTURE: Lists and Adapters::
+Overview of lists and adapters: Lists_and_Adapters. Intro to List fragment.
+
+DEMO: Create TimelineFragment::
+Create a fragment that will display the list of statuses from the status provider. Use `SimpleCursorAdapter`.
+
+LAB: Create a Custom View::
+Create a custom view to represent a single row of data. Call it `raw.xml` and it should have `text_user`, `text_message`, and `text_created_at` as pieces of text.
+
+DEMO: View Binder::
+Create a view binder to properly display the relative time.
+
+LECTURE: Loaders::
+How to implement a cursor loader: Loaders.
+
+
+// lunch
+
+
+LECTURE: Broadcast Receiver::
+Overview of broadcast receivers, when to use them, and common patterns: Broadcast_Receivers.
+
+DEMO: Create a Broadcast Receiver
+Use a BOOT COMPLETED broadcast action to trigger a receiver that will setup an Alarm service with a pending intent to regularly start the refresh service.
+
+DEMO: Setup the Alarm::
+Add an alarm in refresh receiver to kick start the refresh service at refresh interval.
+
+HOMEWORK: Add Network Receiver::
+A receiver that turns on or off the refresh service alarm as network becomes available or unavailable.
+
+HOMEWORK: Use Shared Prefs for Refresh Interval::
+We currently have the interval hard coded. We should be using values from the shared preferences instead.
+
+
 == Links ==
 
 * http://software.intel.com/en-us/articles/intel-hardware-accelerated-execution-manager[Intel HAXM]
