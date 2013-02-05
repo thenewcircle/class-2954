@@ -25,7 +25,8 @@ public class StatusActivity extends Activity implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
-		Log.d("Yamba", "onClick'd");
+		String status = editStatus.getText().toString();
+		Log.d("Yamba", "onClick'd with text: " + status);
 	}
 
 }
