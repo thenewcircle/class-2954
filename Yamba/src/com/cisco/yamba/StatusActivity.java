@@ -1,6 +1,7 @@
 package com.cisco.yamba;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -52,6 +53,13 @@ public class StatusActivity extends Activity implements OnClickListener,
 	}
 
 	private class PostStatusTask extends AsyncTask<String, Void, String> {
+		ProgressDialog dialog;
+
+		/** Happens before the background task, on UI thread */
+		@Override
+		protected void onPreExecute() {
+			dialog = ProgressDialog.show(StatusActivity.this, "Posting", "Please wait..");
+		}
 
 		/** Executes on a worker thread */
 		@Override
@@ -70,6 +78,7 @@ public class StatusActivity extends Activity implements OnClickListener,
 		/** Executes on the UI thread */
 		@Override
 		protected void onPostExecute(String result) {
+			dialog.dismiss();
 			Toast.makeText(StatusActivity.this, result, Toast.LENGTH_LONG)
 					.show();
 		}
