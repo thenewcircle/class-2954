@@ -1,22 +1,29 @@
 package com.cisco.yamba;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Debug;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.marakana.android.yamba.clientlib.YambaClient;
 import com.marakana.android.yamba.clientlib.YambaClientException;
 
-public class StatusActivity extends Activity implements OnClickListener {
-	EditText editStatus;
-	Button buttonUpdate;
+public class StatusActivity extends Activity implements OnClickListener,
+		TextWatcher {
+	private static final int MAX_TEXT = 140;
+	private EditText editStatus;
+	private Button buttonUpdate;
+	private TextView textCount;
+	private int defaultColor;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -25,17 +32,23 @@ public class StatusActivity extends Activity implements OnClickListener {
 
 		editStatus = (EditText) findViewById(R.id.text_status);
 		buttonUpdate = (Button) findViewById(R.id.button_update);
+		textCount = (TextView) findViewById(R.id.text_count);
+		
+		textCount.setText(String.valueOf(MAX_TEXT));
+		defaultColor = textCount.getTextColors().getDefaultColor();
 
 		buttonUpdate.setOnClickListener(this);
+		editStatus.addTextChangedListener(this);
 	}
 
+	// --- OnClickListener callback ---
 	@Override
 	public void onClick(View v) {
 
 		// Post to cloud
 		String status = editStatus.getText().toString();
 		new PostStatusTask().execute(status);
-		
+
 	}
 
 	private class PostStatusTask extends AsyncTask<String, Void, String> {
@@ -57,9 +70,32 @@ public class StatusActivity extends Activity implements OnClickListener {
 		/** Executes on the UI thread */
 		@Override
 		protected void onPostExecute(String result) {
-			Toast.makeText(StatusActivity.this, result, Toast.LENGTH_LONG).show();
+			Toast.makeText(StatusActivity.this, result, Toast.LENGTH_LONG)
+					.show();
 		}
 
-		
+	}
+
+	// --- TextWateched callbacks ---
+	@Override
+	public void afterTextChanged(Editable s) {
+		int count = 140 - editStatus.length();
+
+		textCount.setText(String.valueOf(count));
+
+		if (count < 50) {
+			textCount.setTextColor(Color.RED);
+		} else {
+			textCount.setTextColor(defaultColor);
+		}
+	}
+
+	@Override
+	public void beforeTextChanged(CharSequence s, int start, int count,
+			int after) {
+	}
+
+	@Override
+	public void onTextChanged(CharSequence s, int start, int before, int count) {
 	}
 }
