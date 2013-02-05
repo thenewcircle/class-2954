@@ -9,8 +9,6 @@ Day 1
 LECTURE: Android Overview::
 Overview of Android, it's history, big picture of its stack, development tools, and security model: Android Overview.
 
-////
-
 LECTURE: Android UI::
 Explain how the UI is organized.
 
@@ -68,6 +66,7 @@ Use AsyncTask's callbacks to start/stop the progress dialog.
 HOMEWORK::
 Read ahead on Fragments module Fragments.
 
+////
 
 Day 3
 ----
