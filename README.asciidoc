@@ -213,6 +213,14 @@ We currently have the interval hard coded. We should be using values from the sh
 
 ////
 
+
+== Parking Lot == 
+
+* NDK
+* Binder IPC
+* NFC
+
+
 == Links ==
 
 * http://software.intel.com/en-us/articles/intel-hardware-accelerated-execution-manager[Intel HAXM]
