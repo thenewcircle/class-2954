@@ -221,6 +221,7 @@ For later:
 * NDK
 * Binder IPC
 * NFC
+* Custom components
 
 
 == Links ==
