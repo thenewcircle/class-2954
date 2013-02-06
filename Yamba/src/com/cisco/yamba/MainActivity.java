@@ -28,6 +28,9 @@ public class MainActivity extends Activity {
 			return true;
 		case R.id.item_prefs:
 			startActivity(new Intent(this, PrefsActivity.class));
+		case R.id.item_refresh:
+			startService(new Intent(this, RefreshService.class));
+			return true;
 		default:
 			return false;
 		}
