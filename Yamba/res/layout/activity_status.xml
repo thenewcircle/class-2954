@@ -3,7 +3,7 @@
     android:layout_height="fill_parent" >
 
     <fragment
-        android:id="@+id/fragment1"
+        android:id="@+id/fragment_status"
         android:name="com.cisco.yamba.StatusFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

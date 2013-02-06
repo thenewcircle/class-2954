@@ -8,5 +8,9 @@
     <string name="status_hint">What\'s going on?</string>
     <string name="preferences">Preferences</string>
     <string name="prefs">Prefs</string>
+    <string name="username">Username</string>
+    <string name="username_summary">What\'s your Yamba login?</string>
+    <string name="password">Password</string>
+    <string name="password_summary">What\'s your password?</string>
 
 </resources>
