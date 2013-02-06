@@ -22,13 +22,15 @@ public class MainActivity extends Activity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch(item.getItemId()) {
+		switch (item.getItemId()) {
 		case R.id.item_status:
-			startActivity( new Intent("Cisco.yamba.action.STATUS") );
+			startActivity(new Intent("Cisco.yamba.action.STATUS"));
 			return true;
-			default:
-				return false;
+		case R.id.item_prefs:
+			startActivity(new Intent(this, PrefsActivity.class));
+		default:
+			return false;
 		}
 	}
-	
+
 }
