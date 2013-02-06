@@ -1,7 +1,6 @@
 package com.cisco.yamba;
 
 import android.app.Fragment;
-import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -31,7 +31,6 @@ public class StatusFragment extends Fragment implements OnClickListener,
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-//		setContentView(R.layout.activity_status);
 		View view = inflater.inflate(R.layout.fragment_status, container, false);
 
 		editStatus = (EditText) view.findViewById(R.id.text_status);
@@ -58,13 +57,11 @@ public class StatusFragment extends Fragment implements OnClickListener,
 	}
 
 	private class PostStatusTask extends AsyncTask<String, Void, String> {
-		ProgressDialog dialog;
-
+		
 		/** Happens before the background task, on UI thread */
 		@Override
 		protected void onPreExecute() {
-			dialog = ProgressDialog.show( getActivity(), "Posting",
-					"Please wait..");
+			getActivity().setProgressBarIndeterminateVisibility(true);
 		}
 
 		/** Executes on a worker thread */
@@ -84,7 +81,7 @@ public class StatusFragment extends Fragment implements OnClickListener,
 		/** Executes on the UI thread */
 		@Override
 		protected void onPostExecute(String result) {
-			dialog.dismiss();
+			getActivity().setProgressBarIndeterminateVisibility(false);
 			Toast.makeText( getActivity(), result, Toast.LENGTH_LONG)
 					.show();
 		}
