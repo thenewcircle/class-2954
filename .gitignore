@@ -12,6 +12,7 @@
 bin/
 gen/
 HelloWorld/
+ApiDemos/
 
 # Local configuration file (sdk path, etc)
 local.properties
