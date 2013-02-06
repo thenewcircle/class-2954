@@ -24,13 +24,11 @@ public class MainActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch(item.getItemId()) {
 		case R.id.item_status:
-			startActivity( new Intent(this, StatusActivity.class) );
-			
+			startActivity( new Intent("Cisco.yamba.action.STATUS") );
 			return true;
 			default:
 				return false;
 		}
 	}
-
 	
 }
