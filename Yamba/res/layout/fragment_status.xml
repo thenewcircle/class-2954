@@ -1,0 +1,38 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity" >
+
+    <Button
+        android:id="@+id/button_update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/update"
+        android:textSize="30sp" />
+
+    <EditText
+        android:id="@+id/text_status"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/button_update"
+        android:ems="10"
+        android:gravity="top"
+        android:textSize="30sp"
+        android:hint="@string/status_hint"
+        android:inputType="textMultiLine" />
+
+    <TextView
+        android:id="@+id/text_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/button_update"
+        android:layout_alignBottom="@+id/button_update"
+        android:layout_alignParentLeft="true"
+        android:text="140"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+</RelativeLayout>
