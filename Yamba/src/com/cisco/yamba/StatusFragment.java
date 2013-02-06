@@ -1,9 +1,11 @@
 package com.cisco.yamba;
 
 import android.app.Fragment;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -67,7 +69,15 @@ public class StatusFragment extends Fragment implements OnClickListener,
 		@Override
 		protected String doInBackground(String... param) {
 			try {
-				YambaClient yamba = new YambaClient("student", "password");
+				// Get the login info from the preferences
+				SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+				String username = prefs.getString("username", null);
+				String password = prefs.getString("password", null);
+				if( username==null || password==null) {
+					return "Please update your login info";
+				}
+				// Post to the cloud
+				YambaClient yamba = new YambaClient(username, password);
 				yamba.postStatus(param[0]);
 				return "Successfully posted";
 			} catch (YambaClientException e) {
