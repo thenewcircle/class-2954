@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.marakana.android.yamba.clientlib.YambaClient;
 import com.marakana.android.yamba.clientlib.YambaClient.Status;
@@ -44,6 +45,13 @@ public class RefreshService extends IntentService {
 	@Override
 	protected void onHandleIntent(Intent intent) {
 		Log.d(TAG, "onHandleIntent");
+
+		// Do we have yamba client?
+		if (yamba == null) {
+			noYamba();
+			return;
+		}
+
 		try {
 			List<Status> timeline = yamba.getTimeline(20);
 			for (Status status : timeline) {
@@ -53,7 +61,14 @@ public class RefreshService extends IntentService {
 			}
 		} catch (YambaClientException e) {
 			e.printStackTrace();
+			noYamba();
 		}
+	}
+
+	private void noYamba() {
+		Log.e(TAG, "Wrong username/password");
+		startActivity(new Intent(this, PrefsActivity.class)
+				.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
 	}
 
 	@Override
