@@ -68,7 +68,8 @@ public class RefreshService extends IntentService {
 				values.put(StatusContract.Columns.MESSAGE, status.getMessage());
 				values.put(StatusContract.Columns.CREATED_AT, status
 						.getCreatedAt().getTime());
-				db.insert(StatusContract.TABLE, null, values);
+				db.insertWithOnConflict(StatusContract.TABLE, null, values,
+						SQLiteDatabase.CONFLICT_IGNORE);
 
 				Log.d(TAG,
 						String.format("%s: %s", status.getUser(),
