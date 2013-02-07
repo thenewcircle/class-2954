@@ -5,10 +5,8 @@ import java.util.List;
 import android.app.IntentService;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.marakana.android.yamba.clientlib.YambaClient;
 import com.marakana.android.yamba.clientlib.YambaClient.Status;
@@ -52,6 +50,7 @@ public class RefreshService extends IntentService {
 			return;
 		}
 
+		// Pull the data from the cloud
 		try {
 			List<Status> timeline = yamba.getTimeline(20);
 			for (Status status : timeline) {
