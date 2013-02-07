@@ -1,34 +1,65 @@
 package com.cisco.yamba;
 
-import android.app.Service;
+import java.util.List;
+
+import android.app.IntentService;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
-public class RefreshService extends Service {
-	private static final String TAG = "RefreshService";
+import com.marakana.android.yamba.clientlib.YambaClient;
+import com.marakana.android.yamba.clientlib.YambaClient.Status;
+import com.marakana.android.yamba.clientlib.YambaClientException;
 
-	@Override
-	public IBinder onBind(Intent intent) {
-		return null;
+public class RefreshService extends IntentService {
+
+	private static final String TAG = "RefreshService";
+	private YambaClient yamba;
+
+	public RefreshService() {
+		super(TAG);
 	}
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
+
+		// Get the login info from the preferences
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		String username = prefs.getString("username", null);
+		String password = prefs.getString("password", null);
+		if (username == null || password == null) {
+			yamba = null;
+		} else {
+			yamba = new YambaClient(username, password);
+		}
+
 		Log.d(TAG, "onCreated");
 	}
-	
+
+	/** Executes on a worker thread. */
 	@Override
-	public int onStartCommand(Intent intent, int flags, int startId) {
-		Log.d(TAG, "onStartCommand");
-		return super.onStartCommand(intent, flags, startId);
+	protected void onHandleIntent(Intent intent) {
+		Log.d(TAG, "onHandleIntent");
+		try {
+			List<Status> timeline = yamba.getTimeline(20);
+			for (Status status : timeline) {
+				Log.d(TAG,
+						String.format("%s: %s", status.getUser(),
+								status.getMessage()));
+			}
+		} catch (YambaClientException e) {
+			e.printStackTrace();
+		}
 	}
-	
+
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
 		Log.d(TAG, "onDestroyed");
 	}
-	
+
 }
