@@ -6,7 +6,6 @@ import android.app.IntentService;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -65,8 +64,6 @@ public class RefreshService extends IntentService {
 				values.put(StatusContract.Columns.MESSAGE, status.getMessage());
 				values.put(StatusContract.Columns.CREATED_AT, status
 						.getCreatedAt().getTime());
-//				db.insertWithOnConflict(StatusContract.TABLE, null, values,
-//						SQLiteDatabase.CONFLICT_IGNORE);
 				getContentResolver().insert(StatusContract.CONTENT_URI, values);
 
 				Log.d(TAG,
