@@ -3,6 +3,7 @@ package com.cisco.yamba;
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
@@ -11,6 +12,21 @@ import android.util.Log;
 public class StatusProvider extends ContentProvider {
 	private static final String TAG = "StatusProvider";
 	private DbHelper dbHelper;
+
+	/*
+	 * Status Table: All records:
+	 * content://com.cisco.yamba.provider.timeline/status One record:
+	 * content://com.cisco.yamba.provider.timeline/status/47
+	 */
+
+	private static UriMatcher matcher;
+	static {
+		matcher = new UriMatcher(UriMatcher.NO_MATCH);
+		matcher.addURI(StatusContract.AUTHORITY, StatusContract.TABLE,
+				StatusContract.CONTENT_TYPE_DIR);
+		matcher.addURI(StatusContract.AUTHORITY, StatusContract.TABLE + "/#",
+				StatusContract.CONTENT_TYPE_ITEM);
+	}
 
 	@Override
 	public boolean onCreate() {
@@ -31,8 +47,8 @@ public class StatusProvider extends ContentProvider {
 
 		long id = db.insertWithOnConflict(StatusContract.TABLE, null, values,
 				SQLiteDatabase.CONFLICT_IGNORE);
-		
-		Log.d(TAG, "inserted id: "+id);
+
+		Log.d(TAG, "inserted id: " + id);
 		return (id == -1) ? null : ContentUris.withAppendedId(uri, id);
 	}
 
@@ -47,7 +63,7 @@ public class StatusProvider extends ContentProvider {
 	public int delete(Uri uri, String selection, String[] selectionArgs) {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 		int recs = db.delete(StatusContract.TABLE, selection, selectionArgs);
-		Log.d(TAG, "delete records: "+recs);
+		Log.d(TAG, "delete records: " + recs);
 		return recs;
 	}
 
