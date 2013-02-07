@@ -45,10 +45,10 @@ public class StatusProvider extends ContentProvider {
 
 	@Override
 	public int delete(Uri uri, String selection, String[] selectionArgs) {
-		// TODO Lab: Add Purge button
-//		SQLiteDatabase db = dbHelper.getWritableDatabase();
-//		return db.delete(table, whereClause, whereArgs);
-		return -1;
+		SQLiteDatabase db = dbHelper.getWritableDatabase();
+		int recs = db.delete(StatusContract.TABLE, selection, selectionArgs);
+		Log.d(TAG, "delete records: "+recs);
+		return recs;
 	}
 
 	@Override
