@@ -1,5 +1,6 @@
 package com.cisco.yamba;
 
+import android.net.Uri;
 import android.provider.BaseColumns;
 
 public class StatusContract {
@@ -9,6 +10,9 @@ public class StatusContract {
 	public static final String DB_NAME = "timeline.db";
 	public static final int DB_VERSION = 1;
 	public static final String TABLE = "status";
+	
+	public static final String AUTHORITY = "com.cisco.yamba.provider.timeline";
+	public static final Uri CONTENT_URI = Uri.parse("content://"+AUTHORITY+"/"+TABLE);
 	
 	class Columns {
 		public static final String ID = BaseColumns._ID;

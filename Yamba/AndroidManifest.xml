@@ -20,6 +20,7 @@
             android:label="@string/update" >
             <intent-filter>
                 <action android:name="Cisco.yamba.action.STATUS" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity android:name="com.cisco.yamba.MainActivity" >
@@ -32,8 +33,13 @@
         <activity
             android:name=".PrefsActivity"
             android:label="@string/preferences" />
-        <service android:name=".RefreshService">
+
+        <service android:name=".RefreshService" >
         </service>
+
+        <provider
+            android:name=".StatusProvider"
+            android:authorities="com.cisco.yamba.provider.timeline" />
     </application>
 
 </manifest>

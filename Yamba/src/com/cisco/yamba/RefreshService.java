@@ -54,12 +54,9 @@ public class RefreshService extends IntentService {
 
 		// Pull the data from the cloud
 		try {
-			List<Status> timeline = yamba.getTimeline(20);
-			// Get the db
-			DbHelper dbHelper = new DbHelper(this);
-			SQLiteDatabase db = dbHelper.getWritableDatabase();
 			ContentValues values = new ContentValues();
 
+			List<Status> timeline = yamba.getTimeline(20);
 			for (Status status : timeline) {
 				// Insert into db
 				values.clear();
@@ -68,8 +65,9 @@ public class RefreshService extends IntentService {
 				values.put(StatusContract.Columns.MESSAGE, status.getMessage());
 				values.put(StatusContract.Columns.CREATED_AT, status
 						.getCreatedAt().getTime());
-				db.insertWithOnConflict(StatusContract.TABLE, null, values,
-						SQLiteDatabase.CONFLICT_IGNORE);
+//				db.insertWithOnConflict(StatusContract.TABLE, null, values,
+//						SQLiteDatabase.CONFLICT_IGNORE);
+				getContentResolver().insert(StatusContract.CONTENT_URI, values);
 
 				Log.d(TAG,
 						String.format("%s: %s", status.getUser(),
