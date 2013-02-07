@@ -7,6 +7,7 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.util.Log;
 
 public class StatusProvider extends ContentProvider {
@@ -14,9 +15,9 @@ public class StatusProvider extends ContentProvider {
 	private DbHelper dbHelper;
 
 	/*
-	 * Status Table: All records:
-	 * content://com.cisco.yamba.provider.timeline/status One record:
-	 * content://com.cisco.yamba.provider.timeline/status/47
+	 * Status Table: 
+	 * All records: content://com.cisco.yamba.provider.timeline/status 
+	 * One record: content://com.cisco.yamba.provider.timeline/status/47
 	 */
 
 	private static UriMatcher matcher;
@@ -43,6 +44,11 @@ public class StatusProvider extends ContentProvider {
 
 	@Override
 	public Uri insert(Uri uri, ContentValues values) {
+		// Assert
+		if(matcher.match(uri) != StatusContract.CONTENT_TYPE_DIR) {
+			throw new IllegalArgumentException("Wrong uri: "+uri);
+		}
+		
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 
 		long id = db.insertWithOnConflict(StatusContract.TABLE, null, values,
@@ -59,9 +65,21 @@ public class StatusProvider extends ContentProvider {
 		return 0;
 	}
 
+	// uri: content://com.cisco.yamba.provider.timeline/status/47
+	// selection: user="?"
 	@Override
 	public int delete(Uri uri, String selection, String[] selectionArgs) {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
+		
+		if(matcher.match(uri) == StatusContract.CONTENT_TYPE_ITEM) {
+			long id = ContentUris.parseId(uri);
+			String where = StatusContract.Columns.ID + "=" + id;
+			if(!TextUtils.isEmpty(selection))
+				selection = selection + " AND " + where;
+			else 
+				selection = where;
+		}
+		
 		int recs = db.delete(StatusContract.TABLE, selection, selectionArgs);
 		Log.d(TAG, "delete records: " + recs);
 		return recs;
