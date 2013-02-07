@@ -3,8 +3,10 @@ package com.cisco.yamba;
 import java.util.List;
 
 import android.app.IntentService;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -53,7 +55,21 @@ public class RefreshService extends IntentService {
 		// Pull the data from the cloud
 		try {
 			List<Status> timeline = yamba.getTimeline(20);
+			// Get the db
+			DbHelper dbHelper = new DbHelper(this);
+			SQLiteDatabase db = dbHelper.getWritableDatabase();
+			ContentValues values = new ContentValues();
+
 			for (Status status : timeline) {
+				// Insert into db
+				values.clear();
+				values.put(StatusContract.Columns.ID, status.getId());
+				values.put(StatusContract.Columns.USER, status.getUser());
+				values.put(StatusContract.Columns.MESSAGE, status.getMessage());
+				values.put(StatusContract.Columns.CREATED_AT, status
+						.getCreatedAt().getTime());
+				db.insert(StatusContract.TABLE, null, values);
+
 				Log.d(TAG,
 						String.format("%s: %s", status.getUser(),
 								status.getMessage()));
