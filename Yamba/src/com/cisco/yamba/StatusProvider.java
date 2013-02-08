@@ -15,9 +15,9 @@ public class StatusProvider extends ContentProvider {
 	private DbHelper dbHelper;
 
 	/*
-	 * Status Table: 
-	 * All records: content://com.cisco.yamba.provider.timeline/status 
-	 * One record: content://com.cisco.yamba.provider.timeline/status/47
+	 * Status Table: All records:
+	 * content://com.cisco.yamba.provider.timeline/status One record:
+	 * content://com.cisco.yamba.provider.timeline/status/47
 	 */
 
 	private static UriMatcher matcher;
@@ -45,17 +45,23 @@ public class StatusProvider extends ContentProvider {
 	@Override
 	public Uri insert(Uri uri, ContentValues values) {
 		// Assert
-		if(matcher.match(uri) != StatusContract.CONTENT_TYPE_DIR) {
-			throw new IllegalArgumentException("Wrong uri: "+uri);
+		if (matcher.match(uri) != StatusContract.CONTENT_TYPE_DIR) {
+			throw new IllegalArgumentException("Wrong uri: " + uri);
 		}
-		
+
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 
 		long id = db.insertWithOnConflict(StatusContract.TABLE, null, values,
 				SQLiteDatabase.CONFLICT_IGNORE);
 
 		Log.d(TAG, "inserted id: " + id);
-		return (id == -1) ? null : ContentUris.withAppendedId(uri, id);
+
+		if (id == -1) {
+			return null;
+		} else {
+			getContext().getContentResolver().notifyChange(uri, null);
+			return ContentUris.withAppendedId(uri, id);
+		}
 	}
 
 	@Override
@@ -70,17 +76,21 @@ public class StatusProvider extends ContentProvider {
 	@Override
 	public int delete(Uri uri, String selection, String[] selectionArgs) {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
-		
-		if(matcher.match(uri) == StatusContract.CONTENT_TYPE_ITEM) {
+
+		if (matcher.match(uri) == StatusContract.CONTENT_TYPE_ITEM) {
 			long id = ContentUris.parseId(uri);
 			String where = StatusContract.Columns.ID + "=" + id;
-			if(!TextUtils.isEmpty(selection))
+			if (!TextUtils.isEmpty(selection))
 				selection = selection + " AND " + where;
-			else 
+			else
 				selection = where;
 		}
-		
+
 		int recs = db.delete(StatusContract.TABLE, selection, selectionArgs);
+		
+		if (recs > 0)
+			getContext().getContentResolver().notifyChange(uri, null);
+
 		Log.d(TAG, "delete records: " + recs);
 		return recs;
 	}
@@ -88,7 +98,13 @@ public class StatusProvider extends ContentProvider {
 	@Override
 	public Cursor query(Uri uri, String[] projection, String selection,
 			String[] selectionArgs, String sortOrder) {
-		// TODO Auto-generated method stub
-		return null;
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+		Cursor cursor = db.query(StatusContract.TABLE, projection, selection,
+				selectionArgs, null, null, sortOrder);
+
+		cursor.setNotificationUri(getContext().getContentResolver(), uri);
+
+		return cursor;
 	}
 }

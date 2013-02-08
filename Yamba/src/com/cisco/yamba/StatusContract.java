@@ -24,4 +24,6 @@ public class StatusContract {
 		public static final String MESSAGE = "message";
 		public static final String CREATED_AT = "created_at";
 	}
+	
+	public static final String DEFAULT_SORT = Columns.CREATED_AT + " desc";
 }
