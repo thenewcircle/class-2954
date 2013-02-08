@@ -33,12 +33,14 @@ public class NotificationReceiver extends BroadcastReceiver {
 			notification = new Notification.Builder(context)
 					.setContentTitle("New Status!")
 					.setContentText("You've got a new status.")
+					.setTicker("New Status!")
 					.setContentIntent(operation).getNotification();
 		} else {
 			notification = new Notification.Builder(context)
 					.setContentTitle("New Status!")
 					.setContentText("You've got a new status.")
 					.setSmallIcon(android.R.drawable.ic_menu_add)
+					.setTicker("New Status!")
 					.setContentIntent(operation).build();
 		}
 
