@@ -210,7 +210,6 @@ A receiver that turns on or off the refresh service alarm as network becomes ava
 HOMEWORK: Use Shared Prefs for Refresh Interval::
 We currently have the interval hard coded. We should be using values from the shared preferences instead.
 
-////
 
 
 == Parking Lot ==
