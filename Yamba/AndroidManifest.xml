@@ -51,6 +51,8 @@
         <receiver android:name=".NotificationReceiver" >
             <intent-filter>
                 <action android:name="com.cisco.yamba.action.NEW_DATA" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
     </application>

@@ -66,7 +66,6 @@ public class StatusProvider extends ContentProvider {
 			
 			// Send broadcast
 			Intent intent = new Intent("com.cisco.yamba.action.NEW_DATA");
-			intent.setData(retUri);
 			getContext().sendBroadcast( intent );
 			return retUri;
 		}
