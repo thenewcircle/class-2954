@@ -3,6 +3,7 @@ package com.cisco.yamba;
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -57,10 +58,16 @@ public class StatusProvider extends ContentProvider {
 		if (rowId == -1) {
 			return null;
 		} else {
+			// We have new data
 			getContext().getContentResolver().notifyChange(uri, null);
 			int statusId = values.getAsInteger(StatusContract.Columns.ID);
 			Uri retUri = ContentUris.withAppendedId(uri, statusId);
 			Log.d(TAG, "insert with uri: " + retUri);
+			
+			// Send broadcast
+			Intent intent = new Intent("com.cisco.yamba.action.NEW_DATA");
+			intent.setData(retUri);
+			getContext().sendBroadcast( intent );
 			return retUri;
 		}
 	}
