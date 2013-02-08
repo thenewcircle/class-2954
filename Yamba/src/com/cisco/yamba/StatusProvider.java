@@ -51,16 +51,17 @@ public class StatusProvider extends ContentProvider {
 
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-		long id = db.insertWithOnConflict(StatusContract.TABLE, null, values,
-				SQLiteDatabase.CONFLICT_IGNORE);
+		long rowId = db.insertWithOnConflict(StatusContract.TABLE, null,
+				values, SQLiteDatabase.CONFLICT_IGNORE);
 
-		Log.d(TAG, "inserted id: " + id);
-
-		if (id == -1) {
+		if (rowId == -1) {
 			return null;
 		} else {
 			getContext().getContentResolver().notifyChange(uri, null);
-			return ContentUris.withAppendedId(uri, id);
+			int statusId = values.getAsInteger(StatusContract.Columns.ID);
+			Uri retUri = ContentUris.withAppendedId(uri, statusId);
+			Log.d(TAG, "insert with uri: " + retUri);
+			return retUri;
 		}
 	}
 
@@ -87,7 +88,7 @@ public class StatusProvider extends ContentProvider {
 		}
 
 		int recs = db.delete(StatusContract.TABLE, selection, selectionArgs);
-		
+
 		if (recs > 0)
 			getContext().getContentResolver().notifyChange(uri, null);
 

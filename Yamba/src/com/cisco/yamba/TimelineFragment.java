@@ -22,7 +22,7 @@ public class TimelineFragment extends ListFragment {
 		SimpleCursorAdapter adapter = new SimpleCursorAdapter(getActivity(),
 				android.R.layout.simple_list_item_2, cursor, FROM, TO,
 				CursorAdapter.FLAG_AUTO_REQUERY);
-		
+
 		setListAdapter(adapter);
 	}
 
