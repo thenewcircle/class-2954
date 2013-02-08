@@ -8,7 +8,7 @@ import android.content.Intent;
 import android.util.Log;
 
 public class BootReceiver extends BroadcastReceiver {
-	private static final long INTERVAL = 30 * 1000L;
+	private static final long INTERVAL = AlarmManager.INTERVAL_FIFTEEN_MINUTES;
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
